@@ -54,19 +54,12 @@ class PreRenderedData
 
         foreach ($sessions as $session) {
 
-            if (in_array($session->getStatus(), array(Session::STATUS_START, Session::STATUS_FAILED))) {
+            if ($session->getStatus() == Session::STATUS_FAILED) {
 
                 $date = clone $session->getLast();
-
                 $lastTimeMinutes = self::getTimeInMinutes($session->getLast());
-                switch ($session->getStatus()) {
-                    case Session::STATUS_START:
-                        $map[$date->format('Y-m-d')][] = new SessionStart($startTimeMinutes, $session->getService());
-                        break;
-                    case Session::STATUS_FAILED:
-                        $map[$date->format('Y-m-d')][] = new SessionFailed($startTimeMinutes, $session->getService());
-                        break;
-                }
+                $map[$date->format('Y-m-d')][] = new SessionFailed($startTimeMinutes, $session->getService());
+
             } else {
 
                 $startDate = clone $session->getStart();
