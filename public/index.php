@@ -38,10 +38,10 @@ $app->register(
                 'namespace' => 'VisualRadius\\Data'
             ),
         ),
-        'doctrine.odm.mongodb.proxies_dir'             => __DIR__ . '/../cache/doctrine/odm/mongodb/Proxy',
+        'doctrine.odm.mongodb.proxies_dir'             => __DIR__ . '/../cache',
         'doctrine.odm.mongodb.proxies_namespace'       => 'DoctrineMongoDBProxy',
         'doctrine.odm.mongodb.auto_generate_proxies'   => true,
-        'doctrine.odm.mongodb.hydrators_dir'           => __DIR__ . '/../cache/doctrine/odm/mongodb/Hydrator',
+        'doctrine.odm.mongodb.hydrators_dir'           => __DIR__ . '/../cache',
         'doctrine.odm.mongodb.hydrators_namespace'     => 'DoctrineMongoDBHydrator',
         'doctrine.odm.mongodb.auto_generate_hydrators' => true,
         'doctrine.odm.mongodb.metadata_cache'          => 'ArrayCache',
