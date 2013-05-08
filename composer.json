@@ -1,0 +1,30 @@
+{
+    "name":        "plusnet/VisualRadius",
+    "description": "Visual Radius",
+    "keywords":    ["visual", "radius"],
+    "homepage":    "http://ccgi.psmith12.plus.net/visradius",
+    "license":     "MIT",
+    "authors":[
+        {
+            "name" : "Peter Smith",
+            "email": "peter@orukusaki.co.uk"
+        }
+    ],
+    "require":{
+        "php"                             : ">=5.3.2",
+        "friendsofsymfony/rest"           : ">0",
+        "igorw/config-service-provider"   : "1.2.*",
+        "twig/twig"                       : "1.6.0",
+        "silex/silex"                     : "1.0.*@dev",
+        "doctrine/mongodb-odm": "dev-master",
+        "docteurklein/silex-doctrine-service-providers": "dev-master"
+    },
+
+
+    "suggest":{},
+    "autoload":{
+        "psr-0":{
+            "VisualRadius": "src/"
+        }
+    }
+}

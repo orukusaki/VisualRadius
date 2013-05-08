@@ -1,0 +1,88 @@
+{% extends "layout.twig" %}
+{% block topmenu %}
+{% set page = 'api' %}
+{{ parent() }}
+{% endblock %}
+{% block content %}
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h1>API</h1>
+        <p>VisualRadius is now a <a href="http://en.wikipedia.org/wiki/Representational_state_transfer" target="_blank">REST</a> App.</p>
+        <p>This page details the calls and responses available.</p>
+      </div>
+
+      <div>
+        <h2>Formats</h2>
+        <p>The return format for each call can be specified in either of two ways</p>
+        <ol>
+            <li>Using the <em>Accept</em> header, eg:
+                <pre>curl -H "Accept: application/json" {{ app.url_generator.generate('viewImage', {'imageId' : '123456789012345678901234'}, true)}}</pre>
+            </li>
+            <li>Appending the format to the URI, eg:
+                <pre>curl {{ app.url_generator.generate('viewImage', {'imageId' : '123456789012345678901234', 'format': 'json'}, true)}}</pre>
+            </li>
+        </ol>
+        <h3>Available Formats</h3>
+        <ul>
+            <li>html</li>
+            <li>json</li>
+            <li>xml</li>
+            <li>png</li>
+        </ul>
+        <p>NB. Not every format is available for every call.</p>
+        <h2>Resources</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Resource</th>
+                    <th>Description</th>
+                    <th>Attributes</th>
+                    <th>Return Types</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td><strong>GET</strong> /</td>
+                    <td>Index page</td>
+                    <td><em>none</em></td>
+                    <td>html, xml, json</td>
+                </tr>
+                <tr>
+                    <td><strong>GET</strong> /image/{imageId}.{format}</td>
+                    <td>Fetch a stored image</td>
+                    <td>
+                        <dl>
+                            <dt>imageId</dt>
+                            <dd>(required) Image Id</dd>
+                            <dt>format</dt>
+                            <dd>(optional) Return format</dd>
+                        </dl>
+                    </td>
+                    <td>png, html, xml, json</td>
+                </tr>
+                <tr>
+                    <td><strong>POST</strong> /image</td>
+                    <td>Generate a new image</td>
+                    <td>
+                        <dl>
+                            <dt>width</dt>
+                            <dd>Image Width</dd>
+                            <dt>save</dt>
+                            <dd>0/1 Whether to cache the generated image for recall later.  A cached image will be returned as a resource link to the newly created image.</dd>
+                            <dt>condense</dt>
+                            <dd>0/1 Whether to condense sessions or gaps which span multiple days.</dd>
+                            <dt>viewStart</dt>
+                            <dd>0-23 The start time in hours</dd>
+                            <dt>pastedRecords</dt>
+                            <dd>Paste from the RADIUS reporting page in Workplace.  Fields should be tab-separated.</dd>
+                        </dl>
+                    </td>
+                    <td>png, html, xml, json</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+        </div>
+{% endblock %}

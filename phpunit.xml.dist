@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="Test/Bootstrap.php" forceCoversAnnotation="true" colors="true" strict="true">
+
+    <testsuite name="VisualRadius">
+        <directory suffix=".test.php">./Test</directory>
+    </testsuite>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory suffix=".php">./Test/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

@@ -1,0 +1,127 @@
+{% extends "layout.twig" %}
+{% block topmenu %}
+{% set page = 'home' %}
+{{ parent() }}
+{% endblock %}
+{% block content %}
+<header class="jumbotron subhead">
+    <h1>Visual Radius  <small>v3.0</small></h1>
+    <p class="lead">A tool for visualising RADIUS data</p>
+</header>
+<div class="row">
+    <div class="span8">
+        <form method="post" action="{{ app.url_generator.generate('generate') }}" class="form-horizontal">
+        <fieldset>
+            <input type="hidden" name="width" id="width" style="width:3em"/>
+            <div class="control-group">
+                <label class="control-label" for="input01">Output to: </label>
+                  <div class="controls">
+                    <input type="radio" name="save" value="1" id="file" class="input-xlarge"/>
+                    <label for="file" style="display:inline"><i class=" icon-file"></i> File</label><br />
+                    <input type="radio" name="save" value="0" id="screen" checked="checked" class="input-xlarge"/>
+                    <label for="screen" style="display:inline"><i class="icon-fullscreen"></i> Screen</label>
+                  </div>
+              </div>
+
+            <div class="control-group">
+                <label class="control-label" for="condense">Condense: </label>
+                  <div class="controls">
+                    <input type="checkbox" name="condense" checked="checked"/>
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label">View Time: </label>
+                  <div class="controls">
+            <select name="viewStart">
+                <option value="0">From:</option>
+                <option value="0">00:00</option>
+                <option value="1">01:00</option>
+                <option value="2">02:00</option>
+                <option value="3">03:00</option>
+                <option value="4">04:00</option>
+                <option value="5">05:00</option>
+                <option value="6">06:00</option>
+                <option value="7">07:00</option>
+                <option value="8">08:00</option>
+                <option value="9">09:00</option>
+                <option value="10">10:00</option>
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15">15:00</option>
+                <option value="16">16:00</option>
+                <option value="17">17:00</option>
+                <option value="18">18:00</option>
+                <option value="19">19:00</option>
+                <option value="20">20:00</option>
+                <option value="21">21:00</option>
+                <option value="22">22:00</option>
+                <option value="23">23:00</option>
+            </select>
+
+            <select name="viewEnd">
+                <option value="24">To:</option>
+                <option value="1">01:00</option>
+                <option value="2">02:00</option>
+                <option value="3">03:00</option>
+                <option value="4">04:00</option>
+                <option value="5">05:00</option>
+                <option value="6">06:00</option>
+                <option value="7">07:00</option>
+                <option value="8">08:00</option>
+                <option value="9">09:00</option>
+                <option value="10">10:00</option>
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15">15:00</option>
+                <option value="16">16:00</option>
+                <option value="17">17:00</option>
+                <option value="18">18:00</option>
+                <option value="19">19:00</option>
+                <option value="20">20:00</option>
+                <option value="21">21:00</option>
+                <option value="22">22:00</option>
+                <option value="23">23:00</option>
+                <option value="24">00:00</option>
+            </select>
+        </div>
+    </div>
+
+            <div class="control-group">
+                <label class="control-label" for="input">Paste in here: <i class="icon-hand-right"></i></label>
+                  <div class="controls">
+                    <textarea name="pastedRecords" cols="30" rows="10" class="input-xlarge"></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <input type="submit" value="Submit &raquo;" class="btn btn-primary btn-large"/>
+            </div>
+
+            </fieldset>
+
+        </form>
+    </div>
+    <div class="span4">
+        <div class="well">
+            <h3>Usage</h3>
+            <p>Paste records in here from the RADIUS page in Workplace.  Last time I tried it, IE didn't work properly because of the way it pastes tables (no tab characters).  Chrome and Firefox work ok though.</p>
+            <h3>Options</h3>
+            <dl>
+                <dt>Output To</dt>
+                <dd>Select <i>Screen</i> to see the results straight away in your browser, the image is not saved.
+                    Select <i>File</i> To save the generated image, so it can be pasted into to ticket.</dd>
+                <dt>Condense</dt>
+                <dd>Squashes down sessions or gaps which span multiple days.</dd>
+                <dt>View Time</dt>
+                <dd>Restrict the time shown in the image.</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

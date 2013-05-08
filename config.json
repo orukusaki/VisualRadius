@@ -1,0 +1,38 @@
+{
+  "cache": {
+    "image.cache": "/tmp/VisualRadiusCache",
+    "max.size": "200M"
+  },
+  "database": {
+    "server": "localhost",
+    "dbname": "visualRadius",
+    "collection": "preRenderedImages"
+  },
+  "formats": {
+    "png": "\\VisualRadius\\Renderer\\Gd",
+    "json": "\\VisualRadius\\Renderer\\Json",
+    "html": "\\VisualRadius\\Renderer\\Html"
+  },
+  "decorators": {
+    "condense": "\\VisualRadius\\Decorator\\Condense"
+  },
+  "image": {
+    "imageWidth": 550,
+    "borderTop": 20,
+    "borderBottom": 80,
+    "borderRight": 12,
+    "borderLeft": 57,
+    "slotHeight": 40,
+    "viewStart": 0,
+    "viewEnd": 24,
+    "colours": {
+      "line": "#000",
+      "background": "#ffff96",
+      "weekdayback": "#ffffbe",
+      "weekendback": "#ffbe96",
+      "vertline": "#969696",
+      "keyback": "#ffffff"
+    },
+    "imagePath": "assets/images"
+  }
+}

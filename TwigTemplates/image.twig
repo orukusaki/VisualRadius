@@ -1,0 +1,23 @@
+{% extends "layout.twig" %}
+{% block topmenu %}
+{% set page = '' %}
+{{ parent() }}
+{% endblock %}
+{% block content %}
+<header class="jumbotron subhead">
+    <h1>Visual Radius  <small>v3.0</small></h1>
+    <p class="lead">A tool for visualising RADIUS data</p>
+</header>
+
+<div><image src="{{ app.url_generator.generate('viewImage', {'imageId' : imageId, 'format': 'png'}, true)}}" />
+</div>
+
+<div>
+    <h3>Link</h3>
+    <p>You can link to this image using:
+    <pre>
+        &lt;image src="{{ app.url_generator.generate('viewImage', {'imageId' : imageId, 'format': 'png'}, true)}}" /&gt;&lt;div style="clear:both;"&gt;&lt;/div&gt;
+    </pre>
+    </p>
+</div>
+{% endblock %}
