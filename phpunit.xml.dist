@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="Test/Bootstrap.php" forceCoversAnnotation="true" colors="true" strict="true">
+<phpunit bootstrap="test/bootstrap.php" forceCoversAnnotation="true" colors="true" strict="true">
 
     <testsuite name="VisualRadius">
-        <directory suffix=".test.php">./Test</directory>
+        <directory suffix=".test.php">./test</directory>
     </testsuite>
 
     <filter>

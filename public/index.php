@@ -15,7 +15,7 @@ $app->register(new \Igorw\Silex\ConfigServiceProvider(__DIR__ . '/../config.json
 
 $app->register(
     new \Silex\Provider\TwigServiceProvider(),
-    array('twig.path' => __DIR__.'/../TwigTemplates')
+    array('twig.path' => __DIR__.'/../templates')
 );
 
 $app['negotiator'] = new \FOS\Rest\Util\FormatNegotiator();
@@ -95,7 +95,7 @@ $app->get(
                 404
             );
         }
-// var_dump($preRenderedData);
+
         if ($format == 'png') {
             $filename = $options['image.cache']
                       . DIRECTORY_SEPARATOR
