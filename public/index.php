@@ -76,50 +76,45 @@ $app->get(
             $format = $app['format'];
         }
 
+        $options = array_merge($app['image'], $app['cache']);
+        $renderer = new $app['formats'][$format]($app, $options);
+
         $preRenderedData = $app['doctrine.odm.mongodb.dm']->find('VisualRadius\\Data\\PreRenderedData', $imageId);
 
-        if ($format == 'html') {
-            return $app['twig']->render(
-                'image.twig',
-                array('imageId' => $imageId)
-            );
-        }
+        // if (!$preRenderedData) {
+        //      //TODO: Impliment
+        //     return new Response(
+        //         $renderer->getNotFoundContent($imageId),
+        //         404
+        //     );
+        // }
 
-        $options = array_merge($app['image'], $app['cache']);
-        $renderer = new $app['formats'][$format]($options);
+        $preRenderedData->updateLastAccess();
+        $app['doctrine.odm.mongodb.dm']->flush();
 
-        if (!$preRenderedData) {
-             //TODO: Impliment
-            return new Response(
-                $renderer->getNotFoundContent($imageId),
-                404
-            );
-        }
-
+        // Check for cached image on disk
         if ($format == 'png') {
             $filename = $options['image.cache']
                       . DIRECTORY_SEPARATOR
                       . $imageId . '.png';
-            // if (file_exists($filename)) {
-            //     return $app->stream(
-            //         function () use ($filename) {
-            //             readfile($filename);
-            //         },
-            //         200,
-            //         array("Content-type" => "image/png")
-            //     );
-            // }
+            if (file_exists($filename)) {
+                return $app->stream(
+                    function () use ($filename) {
+                        readfile($filename);
+                    },
+                    200,
+                    array("Content-type" => "image/png")
+                );
+            }
+        } else {
+            $filename = null;
         }
 
-        // $renderer->render($preRenderedData, $imageId, $filename);
-        $renderer->render($preRenderedData, $imageId, null);
-
         return $app->stream(
-            $renderer->getStream(),
+            $renderer->render($preRenderedData, $imageId, $filename),
             200,
             $renderer->getContentHeader()
         );
-
     }
 )
 ->value('format', null)
@@ -156,10 +151,10 @@ $app->post(
             );
         }
 
-        $renderer = new $app['formats']['png']($options); //TODO: locked to png
-        $renderer->render($preRenderedData, $options);
+        $renderer = new $app['formats']['png']($app, $options); //TODO: locked to png
+
         return $app->stream(
-            $renderer->getStream(),
+            $renderer->render($preRenderedData, $options),
             200,
             $renderer->getContentHeader()
         );

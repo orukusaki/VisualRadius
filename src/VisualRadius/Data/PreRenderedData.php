@@ -12,6 +12,7 @@ use DateTime;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\EmbedMany;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\Id;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\Date;
 
 /**
  * Class for pre-rendering session data to a map of objects to draw
@@ -35,7 +36,13 @@ class PreRenderedData
      * @var array
      * @EmbedMany
      */
-    protected $slots = array();
+    private $slots = array();
+
+    /**
+     * @var DateTime
+     * @Date
+     */
+    private $lastAccessed;
 
     /**
      * Build From Session Data
@@ -157,6 +164,11 @@ class PreRenderedData
     public function getId()
     {
         return $this->id;
+    }
+
+    public function updateLastAccess()
+    {
+        $this->lastAccessed = new DateTime();
     }
 
     private function getTimeInMinutes(DateTime $time)

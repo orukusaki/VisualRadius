@@ -35,16 +35,7 @@ class SlotDraw
      * Objects to display
      *
      * @var array
-     * @EmbedMany(
-     *      discriminatorMap={
-     *          "session"="Session",
-     *          "box"="SessionBox",
-     *          "close"="SessionClose",
-     *          "failed"="SessionFailed",
-     *          "openend"="SessionOpenEnd",
-     *          "start"="SessionStart"
-     *      }
-     * )
+     * @EmbedMany
      */
     private $objects = array();
 

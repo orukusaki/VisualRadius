@@ -33,7 +33,7 @@ class Gd implements IRenderer
     protected $image;
     protected $options = array();
 
-    public function __construct(array $options)
+    public function __construct($app, array $options)
     {
         // TODO: Be more explicit here
         extract($options);
@@ -56,18 +56,13 @@ class Gd implements IRenderer
 
     public function render(PreRenderedData $data, $imageId, $filename=null)
     {
-        $this->image = $this->generateImage($data);
+        $image = $this->generateImage($data);
 
         if ($filename) {
-            imagepng($this->image, $filename);
+            imagepng($image, $filename);
         }
-    }
 
-    public function getStream()
-    {
-        $image = $this->image;
-        return function() use ($image)
-        {
+        return function () use ($image) {
              imagepng($image);
         };
     }
