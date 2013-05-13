@@ -1,6 +1,7 @@
 <?php
 
 $conf = array(
+    'COMMIT_ID'       => getenv('COMMIT_ID'),
     'CI'              => getenv('CI'),
     'CI_BUILD_NUMBER' => getenv('CI_BUILD_NUMBER'),
     'CI_BUILD_URL'    => getenv('CI_BUILD_URL'),
