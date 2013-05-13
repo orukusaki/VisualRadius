@@ -29,7 +29,7 @@ class Condense implements DecoratorInterface
             $last = end($newSlots);
             // There were no sessions today
             if (empty($objects)) {
-                if ($last  instanceof SlotGap) {
+                if ($last instanceof SlotGap) {
                     $last->incDays();
                 } else {
                     $newSlots[] = new SlotGap(1);
@@ -42,7 +42,7 @@ class Condense implements DecoratorInterface
             if (sizeof($objects) == 1 && $objects[0] instanceof SessionBox) {
 
                 if ($last instanceof SlotContinuous) {
-                    $last ->incDays();
+                    $last->incDays();
                 } else {
                     $newSlots[] = new SlotContinuous(1, $objects[0]->getService());
                 }
