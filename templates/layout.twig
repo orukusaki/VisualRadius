@@ -55,7 +55,12 @@
       <hr>
 
       <footer>
-        <p>Visual Radius by Peter Smith, &copy; Plusnet {{"now"|date("Y")}}</p>
+        <p>Visual Radius by Peter Smith, &copy; {{"now"|date("Y")}}.  Powered by Silex, Twig, and MongoDb.</p>
+        <p>Maintained on <a href="https://github.com/orukusaki/VisualRadius">GitHub.</a>
+          {% if build.CI %}
+          Build: <a href="{{build.CI_BUILD_URL}}">{{build.CI_BUILD_NUMBER}}</a>,
+          Branch: <a href="https://github.com/orukusaki/VisualRadius/tree/develop">{{build.CI_BRANCH}}</a></p>
+          {% endif %}
       </footer>
 
     </div> <!-- /container -->

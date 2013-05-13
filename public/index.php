@@ -18,6 +18,11 @@ $app->register(
     array('twig.path' => __DIR__.'/../templates')
 );
 
+$app->register(
+    new \VisualRadius\ServiceProvider\TwigGlobalProvider(),
+    array('build.file' => __DIR__ . '/../build.json')
+);
+
 $app['negotiator'] = new \FOS\Rest\Util\FormatNegotiator();
 
 
