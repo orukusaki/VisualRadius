@@ -122,36 +122,16 @@ class PreRenderedData
         $i=0;
         // for each day between the first and last.
 
-        if ($options['condense']) {
-            for ($date = $firstDate; $date <= $lastDate; $date->modify('+1 day')) {
-                if (!array_key_exists($date->format('Y-m-d'), $map)) { // There were no sessions today.
 
-                    if ($i>0 and $slots[$i-1] instanceof SlotGap) {
-                        $slots[$i-1]->incDays();
-                    } else {
-                        $slots[$i++] = new SlotGap(1);
-                    }
-                } elseif (sizeof($map[$date->format('Y-m-d')]) == 1 && $map[$date->format('Y-m-d')][0] instanceof SessionBox) {
-                    // There's only one thing in this array and it's a continuous connection
-                    if ($i>0 and $slots[$i-1] instanceof SlotContinuous) {
-                        $slots[$i-1]->incDays();
-                    } else {
-                        $slots[$i++] = new SlotContinuous(1, $map[$date->format('Y-m-d')][0]->getService());
-                    }
-                } else {
-                    $slot = new SlotDraw(clone $date);
-                    $slot->addObjects($map[$date->format('Y-m-d')]);
-                    $slots[$i++] = $slot;
-                }
-            }
-        } else {
-            for ($date = $firstDate; $date <= $lastDate; $date->modify('+1 day', $date)) {
-                $slot = new SlotDraw(clone $date);
+        for ($date = $firstDate; $date <= $lastDate; $date->modify('+1 day')) {
+            $slot = new SlotDraw(clone $date);
+            if (array_key_exists($date->format('Y-m-d'), $map)) {
                 $slot->addObjects($map[$date->format('Y-m-d')]);
-                $slots[$i++] = $slot;
-
             }
+            $slots[$i++] = $slot;
+
         }
+
 
         return $data;
     }
@@ -159,6 +139,11 @@ class PreRenderedData
     public function getSlots()
     {
         return is_object($this->slots)? $this->slots->toArray() : $this->slots;
+    }
+
+    public function setSlots(array $slots)
+    {
+        $this->slots = $slots;
     }
 
     public function getId()

@@ -8,7 +8,6 @@
  */
 namespace VisualRadius\Renderer;
 
-use VisualRadius\IRenderer;
 use VisualRadius\Data\PreRenderedData;
 
 /**
@@ -18,7 +17,7 @@ use VisualRadius\Data\PreRenderedData;
  * @subpackage Renderer
  * @author     Peter Smith <peter@orukusaki.co.uk>
  */
-class Html implements IRenderer
+class Html implements RendererInterface
 {
     private $twig;
 

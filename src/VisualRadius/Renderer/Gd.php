@@ -19,7 +19,6 @@ use VisualRadius\Data\SessionStart;
 use VisualRadius\Data\SlotContinuous;
 use VisualRadius\Data\SlotDraw;
 use VisualRadius\Data\SlotGap;
-use VisualRadius\IRenderer;
 
 /**
  * Renderer generates a png image using the gd library
@@ -28,7 +27,7 @@ use VisualRadius\IRenderer;
  * @subpackage Renderer
  * @author     Peter Smith <peter@orukusaki.co.uk>
  */
-class Gd implements IRenderer
+class Gd implements RendererInterface
 {
     protected $image;
     protected $options = array();

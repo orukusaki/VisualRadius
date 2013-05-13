@@ -8,7 +8,6 @@
  */
 namespace VisualRadius\DataSource;
 
-use VisualRadius\IDataSource;
 use VisualRadius\Data\SessionList;
 use VisualRadius\Data\Session;
 use DateTime;
@@ -20,7 +19,7 @@ use DateTime;
  * @author  Peter Smith <peter@orukusaki.co.uk>
  * @link    github.com/orukusaki/visualradius
  */
-class PastedRecords implements IDataSource
+class PastedRecords implements DataSourceInterface
 {
     const COLUMN_LASTUPDATE = 3;
     const COLUMN_CLI = 7;

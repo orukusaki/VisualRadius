@@ -66,6 +66,14 @@ $app->before(
     }
 );
 
+$app->after(
+    function (Request $request, Response $response) use ($app) {
+        if ($response->isSuccessful()) {
+            $app['doctrine.odm.mongodb.dm']->flush();
+        }
+    }
+);
+
 $app->get(
     '/image/{imageId}.{format}',
     function (Request $request, $imageId, $format) use ($app) {
@@ -90,7 +98,6 @@ $app->get(
         // }
 
         $preRenderedData->updateLastAccess();
-        $app['doctrine.odm.mongodb.dm']->flush();
 
         // Check for cached image on disk
         if ($format == 'png') {
@@ -136,7 +143,8 @@ $app->post(
 
         // TODO: Impliment this properly
         foreach ($app['decorators'] as $name => $class) {
-            if ($request->get('decorator.' . $name)) {
+
+            if ($request->get('decorator-' . $name)) {
                 $decorator = new $class();
                 $decorator->decorate($preRenderedData);
             }

@@ -1,27 +1,57 @@
 <?php
-Namespace VisualRadius\Decorator;
+namespace VisualRadius\Decorator;
 
-class Condense implements \VisualRadius\IDecorator
+use VisualRadius\Data\PreRenderedData;
+use VisualRadius\Data\SlotDraw;
+use VisualRadius\Data\SlotGap;
+use VisualRadius\Data\SlotContinuous;
+use VisualRadius\Data\SessionBox;
+
+class Condense implements DecoratorInterface
 {
-    public function decorate($data)
+    public function decorate(PreRenderedData $data)
     {
-    for ($date=$firstDate;$date<=$lastDate;$date=strtotime('+1 day', $date)){
-    If (!array_key_exists($date, $map)){ // There were no sessions today.
 
-        If ($i>0 and $slots[$i-1]['type']=="gap"){
-            $slots[$i-1]['days']++;
-        } else {
-            $slots[$i++]=array('type'=>'gap', 'days'=>1);
+        $slots = $data->getSlots();
+
+        usort(
+            $slots,
+            function (SlotDraw $a, SlotDraw $b) {
+                return ($a->getDate() < $b->getDate()) ? -1: 1;
+            }
+        );
+
+        $newSlots = array();
+
+        foreach ($slots as $slot) {
+
+            $objects = $slot->getObjects();
+            $last = end($newSlots);
+            // There were no sessions today
+            if (empty($objects)) {
+                if ($last  instanceof SlotGap) {
+                    $last->incDays();
+                } else {
+                    $newSlots[] = new SlotGap(1);
+                }
+
+                continue;
+            }
+
+            // There's only a continuous box in this slot
+            if (sizeof($objects) == 1 && $objects[0] instanceof SessionBox) {
+
+                if ($last instanceof SlotContinuous) {
+                    $last ->incDays();
+                } else {
+                    $newSlots[] = new SlotContinuous(1, $objects[0]->getService());
+                }
+                continue;
+            }
+
+            $newSlots[] = $slot;
         }
-    } elseif (sizeof($map[$date])==1 and $map[$date][0]['type']=='Box') { // There's only one thing in this array and it's a continuous connection
-        If ($i>0 and $slots[$i-1]['type']=="cont"){
-            $slots[$i-1]['days']++;
-        } else {
-            $slots[$i++]=array('type'=>'cont', 'days'=>1, 'service'=>$map[$date][0]['service']);
-        }
-    } else {
-        $slots[$i++]=array('type'=>'draw', 'date'=>$date);
-    }
-}
+
+        $data ->setSlots($newSlots);
     }
 }
