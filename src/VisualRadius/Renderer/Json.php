@@ -26,7 +26,7 @@ class Json implements RendererInterface
         $this->uow = $app['doctrine.odm.mongodb.dm']->getUnitOfWork();
     }
 
-    public function render(PreRenderedData $object, $imageId)
+    public function render(PreRenderedData $object)
     {
         $data = $this->uow->getDocumentActualData($object);
         $data['slots'] = $data['slots']->toArray();

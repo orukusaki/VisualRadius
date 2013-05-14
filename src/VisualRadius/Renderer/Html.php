@@ -25,11 +25,11 @@ class Html implements RendererInterface
     {
         $this->twig = $app['twig'];
     }
-    public function render(PreRenderedData $data, $imageId)
+    public function render(PreRenderedData $data)
     {
         $content = $this->twig->render(
             'image.twig',
-            array('imageId' => $imageId)
+            array('imageId' => $data->getId())
         );
 
         return function () use ($content) {

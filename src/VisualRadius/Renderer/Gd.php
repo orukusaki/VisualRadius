@@ -53,11 +53,22 @@ class Gd implements RendererInterface
         return array("Content-type" => "image/png");
     }
 
-    public function render(PreRenderedData $data, $imageId, $filename=null)
+    public function render(PreRenderedData $data)
     {
+        if ($id = $data->getId()) {
+
+            $filename = $this->options['image.cache'] . DIRECTORY_SEPARATOR . $data->getId() . '.png';
+
+            if (file_exists($filename)) {
+                return function () use ($filename) {
+                        readfile($filename);
+                };
+            }
+        }
+
         $image = $this->generateImage($data);
 
-        if ($filename) {
+        if ($id) {
             imagepng($image, $filename);
         }
 
@@ -295,7 +306,7 @@ $dial = false; //FIXME: get from data somehow
 
         // Draw Footer
 
-        $text="Visual Radius by Peter Smith (C) " . date("Y") . " Plusnet";
+        $text="Visual Radius by Peter Smith (C) " . date("Y");
         $textWidth = strlen($text)*imagefontwidth(1);
         imagestring($image, 1, $imageWidth-$textWidth-5, $imageHeight-10,  $text, $colourLine);
 

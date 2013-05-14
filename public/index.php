@@ -1,36 +1,32 @@
 <?php
 namespace VisualRadius;
 
+use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
+use FOS\Rest\Util\FormatNegotiator;
+use Igorw\Silex\ConfigServiceProvider;
+use Knp\Silex\ServiceProvider\DoctrineMongoDBServiceProvider;
+use Silex\Application;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Knp\Silex\ServiceProvider\DoctrineMongoDBServiceProvider;
-use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
+use VisualRadius\ServiceProvider\TwigGlobalProvider;
 
 require_once __DIR__. '/../vendor/autoload.php';
-$app = new \Silex\Application();
-$app['debug'] = true;
-$app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
 
-$app->register(new \Igorw\Silex\ConfigServiceProvider(__DIR__ . '/../config.json'));
+$app = new Application;
+$app['debug'] = getenv('DEBUG');
+$app['negotiator'] = new FormatNegotiator;
+$app->register(new UrlGeneratorServiceProvider);
+$app->register(new ConfigServiceProvider(__DIR__ . '/../config.json'));
+$app->register(new TwigServiceProvider, array('twig.path' => __DIR__ . '/../templates'));
+$app->register(new TwigGlobalProvider, array('build.file' => __DIR__ . '/../build.json'));
 
-$app->register(
-    new \Silex\Provider\TwigServiceProvider(),
-    array('twig.path' => __DIR__.'/../templates')
-);
-
-$app->register(
-    new \VisualRadius\ServiceProvider\TwigGlobalProvider(),
-    array('build.file' => __DIR__ . '/../build.json')
-);
-
-$app['negotiator'] = new \FOS\Rest\Util\FormatNegotiator();
-
-
-// Why isn't this done in the servie provider?
+// Why isn't this done in the service provider?
 AnnotationDriver::registerAnnotationClasses();
 
 $app->register(
-    new DoctrineMongoDBServiceProvider(),
+    new DoctrineMongoDBServiceProvider,
     array(
         'doctrine.odm.mongodb.connection_options' => array(
             // 'database' => 'my_database_name', //TODO: Get config
@@ -52,11 +48,6 @@ $app->register(
         'doctrine.odm.mongodb.metadata_cache'          => 'ArrayCache',
     )
 );
-
-
-
-
-
 // ^^ All this is Bootstrap
 
 
@@ -104,26 +95,8 @@ $app->get(
 
         $preRenderedData->updateLastAccess();
 
-        // Check for cached image on disk
-        if ($format == 'png') {
-            $filename = $options['image.cache']
-                      . DIRECTORY_SEPARATOR
-                      . $imageId . '.png';
-            if (file_exists($filename)) {
-                return $app->stream(
-                    function () use ($filename) {
-                        readfile($filename);
-                    },
-                    200,
-                    array("Content-type" => "image/png")
-                );
-            }
-        } else {
-            $filename = null;
-        }
-
         return $app->stream(
-            $renderer->render($preRenderedData, $imageId, $filename),
+            $renderer->render($preRenderedData),
             200,
             $renderer->getContentHeader()
         );
@@ -140,13 +113,8 @@ $app->post(
         $options = array_merge($app['image'], $app['cache']);
 
         $records = new DataSource\PastedRecords($request->get('pastedRecords'));
-        $options['condense'] = (bool) $request->get('condense');
-        $preRenderedData = Data\PreRenderedData::buildFromSessionData(
-            $records->getData(),
-            $options
-        );
+        $preRenderedData = Data\PreRenderedData::buildFromSessionData($records->getData(), $options);
 
-        // TODO: Impliment this properly
         foreach ($app['decorators'] as $name => $class) {
 
             if ($request->get('decorator-' . $name)) {
@@ -164,10 +132,15 @@ $app->post(
             );
         }
 
-        $renderer = new $app['formats']['png']($app, $options); //TODO: locked to png
+        // Full screen rendering of an image directly to .png format
+        if ($app['format'] == 'html') {
+            $app['format'] = 'png';
+        }
+
+        $renderer = new $app['formats'][$app['format']]($app, $options);
 
         return $app->stream(
-            $renderer->render($preRenderedData, $options),
+            $renderer->render($preRenderedData),
             200,
             $renderer->getContentHeader()
         );
