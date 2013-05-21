@@ -8,5 +8,6 @@ $conf = array(
     'CI_PULL_REQUEST' => getenv('CI_PULL_REQUEST'),
     'CI_BRANCH'       => getenv('CI_BRANCH'),
     'CI_NAME'         => getenv('CI_NAME'),
+    'CI_BUILD_TIME'   => date('c'),
 );
 file_put_contents('build.json', json_encode($conf));
