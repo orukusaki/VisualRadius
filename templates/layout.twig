@@ -58,10 +58,12 @@
         <p>Visual Radius by Peter Smith, &copy; {{"now"|date("Y")}}.
         | Powered by Silex, Twig, and MongoDb.
         | Maintained on <a href="https://github.com/orukusaki/VisualRadius">GitHub.</a>
+        </p>
           {% if build.CI %}
-        | Build: <a href="{{build.CI_BUILD_URL}}">{{build.CI_BUILD_NUMBER}}</a>,
-          Branch: <a href="https://github.com/orukusaki/VisualRadius/tree/develop">{{build.CI_BRANCH}}</a>
-          Commit: <a href="https://github.com/orukusaki/VisualRadius/commit/{{build.COMMIT_ID}}">{{build.COMMIT_ID}}</a>
+        <p>
+          Build: <a href="{{build.CI_BUILD_URL}}">{{build.CI_BUILD_NUMBER}}</a>,
+        | Branch: <a href="https://github.com/orukusaki/VisualRadius/tree/develop">{{build.CI_BRANCH}}</a>
+        | Commit: <a href="https://github.com/orukusaki/VisualRadius/commit/{{build.COMMIT_ID}}">{{build.COMMIT_ID}}</a>
         | Built: {{build.CI_BUILD_TIME}}</a>
         </p>
           {% endif %}
