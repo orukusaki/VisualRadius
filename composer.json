@@ -1,8 +1,8 @@
 {
-    "name":        "plusnet/VisualRadius",
+    "name":        "orukusaki/visualradius",
     "description": "Visual Radius",
     "keywords":    ["visual", "radius"],
-    "homepage":    "http://ccgi.psmith12.plus.net/visradius",
+    "homepage":    "https://github.com/orukusaki/VisualRadius",
     "license":     "MIT",
     "authors":[
         {
@@ -20,7 +20,19 @@
         "docteurklein/silex-doctrine-service-providers": "dev-master"
     },
 
+    "require-dev":{
+        "behat/behat": "2.4.*@stable",
+        "behat/mink": "1.4.*@stable",
+        "behat/mink-extension": "*",
+        "behat/mink-goutte-driver": "*",
+        "behat/mink-selenium2-driver": "*"
+    },
 
+    "config": {
+        "bin-dir": "bin/"
+    },
+
+    "minimum-stability": "dev",
     "suggest":{},
     "autoload":{
         "psr-0":{
