@@ -1,4 +1,5 @@
 default:
     extensions:
         Behat\MinkExtension\Extension:
+            base_url: localhost:8000
             goutte: ~
