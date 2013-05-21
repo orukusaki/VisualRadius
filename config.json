@@ -1,12 +1,11 @@
 {
   "cache": {
-    "image.cache": "/tmp/VisualRadiusCache",
+    "path": "/tmp/VisualRadiusCache",
     "max.size": "200M"
   },
   "database": {
-    "server": "localhost",
-    "dbname": "visualRadius",
-    "collection": "preRenderedImages"
+    "host": "localhost",
+    "database": "visualRadius"
   },
   "formats": {
     "png": "\\VisualRadius\\Renderer\\Gd",

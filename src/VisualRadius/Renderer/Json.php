@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the Gd class
+ * Contains the Json class
  *
  * @package    VisualRadius
  * @subpackage Renderer
@@ -9,9 +9,10 @@
 namespace VisualRadius\Renderer;
 
 use VisualRadius\Data\PreRenderedData;
+use Doctrine\ODM\MongoDB\PersistentCollection;
 
 /**
- * Renderer generates a png image using the gd library
+ * Dumps image data as JSON
  *
  * @package    VisualRadius
  * @subpackage Renderer
@@ -20,51 +21,99 @@ use VisualRadius\Data\PreRenderedData;
 class Json implements RendererInterface
 {
     private $uow;
+    private $urlGenerator;
 
-    public function __construct($app, array $options)
+    /**
+     * Constructor
+     *
+     * @param ArrayAccess $container Container
+     *
+     * @return void
+     */
+    public function __construct(\ArrayAccess $container)
     {
-        $this->uow = $app['doctrine.odm.mongodb.dm']->getUnitOfWork();
+        $this->uow = $container['doctrine.odm.mongodb.dm']->getUnitOfWork();
+        $this->urlGenerator = $container['url_generator'];
     }
 
+    /**
+     * Render
+     *
+     * @param PreRenderedData $object Data to render
+     *
+     * @return Closure
+     */
     public function render(PreRenderedData $object)
     {
-        $data = $this->uow->getDocumentActualData($object);
-        $data['slots'] = $data['slots']->toArray();
+        $data = $this->getData($object);
 
-        foreach ($data['slots'] as $i => $slot) {
-
-            $data['slots'][$i] = $this->uow->getDocumentActualData($slot);
-            $data['slots'][$i]['type'] = str_replace(
-                'VisualRadius\\Data\\Slot',
-                '',
-                get_class($slot)
-            );
-
-            if (!array_key_exists('objects', $data['slots'][$i])) {
-                continue;
-            }
-
-            $data['slots'][$i]['objects'] = $data['slots'][$i]['objects']->toArray();
-
-            foreach ($data['slots'][$i]['objects'] as $j => $session) {
-
-                $data['slots'][$i]['objects'][$j] = $this->uow->getDocumentActualData($session);
-                $data['slots'][$i]['objects'][$j]['type'] = str_replace(
-                    'VisualRadius\\Data\\Session',
-                    '',
-                    get_class($session)
-                );
-            }
-        }
+        $data = $this->addLinks($data);
 
         return function () use ($data) {
              echo json_encode($data);
         };
     }
 
-    public function getContentHeader()
+    /**
+     * Get Data
+     *
+     * Recursively extracts data from an object
+     *
+     * @param object $object Object to extract
+     *
+     * @return array
+     */
+    private function getData($object)
     {
-        return array("Content-type" => "text/json");
+        $data = $this->uow->getDocumentActualData($object);
+
+        foreach ($data as $key => $property) {
+            if ($property instanceof PersistentCollection) {
+                $data[$key] = $property->toArray();
+
+                foreach ($data[$key] as $subkey => $subproperty) {
+                    if (is_object($subproperty)) {
+                        $data[$key][$subkey] = $this->getData($subproperty);
+                        $data[$key][$subkey]['type'] = preg_replace(
+                            "~VisualRadius\\\\Data\\\\(Slot|Session)~",
+                            '',
+                            get_class($subproperty)
+                        );
+                    }
+                }
+            }
+        }
+        return $data;
     }
 
+    /**
+     * Get Content Header
+     *
+     * @return array
+     */
+    public function getContentHeader()
+    {
+        return array("Content-type" => "application/json");
+    }
+
+    /**
+     * Add Links
+     *
+     * @param array $data Data
+     *
+     * @return array
+     */
+    private function addLinks(array $data)
+    {
+        $data['_links'] = array(
+            'home' => array(
+                'href' => $this->urlGenerator->generate('home', array(), true)
+            ),
+            'self' => array(
+                'href' => $this->urlGenerator->generate('viewImage', array('imageId' => $data['id']), true)
+            ),
+        );
+
+        return $data;
+    }
 }

@@ -32,32 +32,46 @@ class Gd implements RendererInterface
     protected $image;
     protected $options = array();
 
-    public function __construct($app, array $options)
+    /**
+     * Constructor
+     *
+     * @param ArrayAccess $container Container
+     *
+     * @return void
+     */
+    public function __construct(\ArrayAccess $container)
     {
-        // TODO: Be more explicit here
-        extract($options);
+        $options = $container['image'];
+        $options['viewLength'] = $options['viewEnd'] - $options['viewStart'];
+        $options['gridRight'] = $options['imageWidth'] - $options['borderRight'];
+        $options['hourstep'] = ($options['gridRight'] - $options['borderLeft']) / $options['viewLength'];
+        $options['gridWidth'] = $options['imageWidth'] - $options['borderRight'] - $options['borderLeft'];
 
-        $viewLength = $viewEnd - $viewStart;
-        $gridRight = $imageWidth - $borderRight;
-        $hourstep = ($gridRight - $borderLeft) / $viewLength;
-        $gridWidth = $imageWidth - $borderRight - $borderLeft;
-
-        $this->options = array_merge(
-            $options,
-            compact('viewLength', 'gridRight', 'imageHeight', 'hourstep', 'gridWidth')
-        );
+        $this->options = array_merge($container['cache'], $options);
     }
 
+    /**
+     * Get Content Header
+     *
+     * @return array
+     */
     public function getContentHeader()
     {
         return array("Content-type" => "image/png");
     }
 
+    /**
+     * Render
+     *
+     * @param PreRenderedData $data Data to render
+     *
+     * @return Closure
+     */
     public function render(PreRenderedData $data)
     {
         if ($id = $data->getId()) {
 
-            $filename = $this->options['image.cache'] . DIRECTORY_SEPARATOR . $data->getId() . '.png';
+            $filename = $this->options['path'] . DIRECTORY_SEPARATOR . $data->getId() . '.png';
 
             if (file_exists($filename)) {
                 return function () use ($filename) {
@@ -89,7 +103,6 @@ class Gd implements RendererInterface
         //TODO: get rid of this line and be more explicit here
         extract($this->options);
         $lastDate = new DateTime();
-        // var_dump($data); die();
         $slots = array_reverse($data->getSlots());
         $imageHeight = $borderTop + $borderBottom + ($slotHeight * sizeof($slots));
 
@@ -282,7 +295,7 @@ class Gd implements RendererInterface
                     }
                 }
 
-            } elseif ($slot instanceOf SlotContinuous) {
+            } elseif ($slot instanceof SlotContinuous) {
                 for ($j = $borderLeft; $j <= $gridRight; $j++) {
                     imagecopy($image, $sprites['Mid'][$slot->getService()], $j, $this->getVPosBySlotNo($i)-3,0,0,1,45);
                 }

@@ -51,7 +51,7 @@ class PreRenderedData
      *
      * @return PreRenderedData
      */
-    public static function buildFromSessionData(SessionList $sessions, $options)
+    public static function buildFromSessionData(SessionList $sessions)
     {
         //Take all the sessions and place them in an array 'map' of the image to draw.
 
@@ -101,7 +101,7 @@ class PreRenderedData
                         $boxEndMinutes = $lastTimeMinutes;
 
                     } else {
-                        $boxEndMinutes = $options['viewEnd'] * 60;
+                        $boxEndMinutes = 24 * 60;
                     }
 
                     $map[$date->format('Y-m-d')][] = new SessionBox($boxStartMinutes, $boxEndMinutes, $session->getService());
@@ -131,7 +131,6 @@ class PreRenderedData
             $slots[$i++] = $slot;
 
         }
-
 
         return $data;
     }

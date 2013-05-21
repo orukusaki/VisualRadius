@@ -12,15 +12,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use VisualRadius\ServiceProvider\TwigGlobalProvider;
 
-require_once __DIR__. '/../vendor/autoload.php';
+$baseDir = dirname(__DIR__) . DIRECTORY_SEPARATOR;
+require_once $baseDir . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 $app = new Application;
 $app['debug'] = getenv('DEBUG');
 $app['negotiator'] = new FormatNegotiator;
 $app->register(new UrlGeneratorServiceProvider);
-$app->register(new ConfigServiceProvider(__DIR__ . '/../config.json'));
-$app->register(new TwigServiceProvider, array('twig.path' => __DIR__ . '/../templates'));
-$app->register(new TwigGlobalProvider, array('build.file' => __DIR__ . '/../build.json'));
+$app->register(new ConfigServiceProvider($baseDir . 'config.json'));
+$app->register(new TwigServiceProvider, array('twig.path' => $baseDir . 'templates'));
+$app->register(new TwigGlobalProvider, array('build.file' => $baseDir . 'build.json'));
 
 // Why isn't this done in the service provider?
 AnnotationDriver::registerAnnotationClasses();
@@ -28,10 +29,7 @@ AnnotationDriver::registerAnnotationClasses();
 $app->register(
     new DoctrineMongoDBServiceProvider,
     array(
-        'doctrine.odm.mongodb.connection_options' => array(
-            // 'database' => 'my_database_name', //TODO: Get config
-            'host'     => 'localhost',
-        ),
+        'doctrine.odm.mongodb.connection_options' => $app['database'],
         'doctrine.odm.mongodb.documents' => array(
             array(
                 'type' => 'annotation',
@@ -39,10 +37,10 @@ $app->register(
                 'namespace' => 'VisualRadius\\Data'
             ),
         ),
-        'doctrine.odm.mongodb.proxies_dir'             => __DIR__ . '/../cache',
+        'doctrine.odm.mongodb.proxies_dir'             => $baseDir . 'cache',
         'doctrine.odm.mongodb.proxies_namespace'       => 'DoctrineMongoDBProxy',
         'doctrine.odm.mongodb.auto_generate_proxies'   => true,
-        'doctrine.odm.mongodb.hydrators_dir'           => __DIR__ . '/../cache',
+        'doctrine.odm.mongodb.hydrators_dir'           => $baseDir . 'cache',
         'doctrine.odm.mongodb.hydrators_namespace'     => 'DoctrineMongoDBHydrator',
         'doctrine.odm.mongodb.auto_generate_hydrators' => true,
         'doctrine.odm.mongodb.metadata_cache'          => 'ArrayCache',
@@ -80,8 +78,7 @@ $app->get(
             $format = $app['format'];
         }
 
-        $options = array_merge($app['image'], $app['cache']);
-        $renderer = new $app['formats'][$format]($app, $options);
+        $renderer = new $app['formats'][$format]($app);
 
         $preRenderedData = $app['doctrine.odm.mongodb.dm']->find('VisualRadius\\Data\\PreRenderedData', $imageId);
 
@@ -110,10 +107,8 @@ $app->post(
     '/image',
     function (Request $request) use ($app) {
 
-        $options = array_merge($app['image'], $app['cache']);
-
         $records = new DataSource\PastedRecords($request->get('pastedRecords'));
-        $preRenderedData = Data\PreRenderedData::buildFromSessionData($records->getData(), $options);
+        $preRenderedData = Data\PreRenderedData::buildFromSessionData($records->getData());
 
         foreach ($app['decorators'] as $name => $class) {
 
@@ -137,7 +132,7 @@ $app->post(
             $app['format'] = 'png';
         }
 
-        $renderer = new $app['formats'][$app['format']]($app, $options);
+        $renderer = new $app['formats'][$app['format']]($app);
 
         return $app->stream(
             $renderer->render($preRenderedData),

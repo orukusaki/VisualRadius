@@ -21,7 +21,7 @@ class Html implements RendererInterface
 {
     private $twig;
 
-    public function __construct($app, array $options)
+    public function __construct(\ArrayAccess $app)
     {
         $this->twig = $app['twig'];
     }
