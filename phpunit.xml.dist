@@ -2,7 +2,7 @@
 <phpunit bootstrap="test/bootstrap.php" forceCoversAnnotation="true" colors="true" strict="true">
 
     <testsuite name="VisualRadius">
-        <directory suffix=".test.php">./test</directory>
+        <directory suffix="Test.php">./test</directory>
     </testsuite>
 
     <filter>
