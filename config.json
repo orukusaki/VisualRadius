@@ -8,12 +8,12 @@
     "database": "visualRadius"
   },
   "formats": {
-    "png": "\\VisualRadius\\Renderer\\Gd",
-    "json": "\\VisualRadius\\Renderer\\Json",
-    "html": "\\VisualRadius\\Renderer\\Html"
+    "png": "\\Orukusaki\\VisualRadius\\Renderer\\Gd",
+    "json": "\\Orukusaki\\VisualRadius\\Renderer\\Json",
+    "html": "\\Orukusaki\\VisualRadius\\Renderer\\Html"
   },
   "decorators": {
-    "condense": "\\VisualRadius\\Decorator\\Condense"
+    "condense": "\\Orukusaki\\VisualRadius\\Decorator\\Condense"
   },
   "image": {
     "imageWidth": 550,
