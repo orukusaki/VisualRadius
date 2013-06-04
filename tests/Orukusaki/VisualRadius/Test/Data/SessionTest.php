@@ -32,7 +32,7 @@ class SessionTest extends \PHPUNIT_Framework_TestCase
      * @param int      $expLast    Expected Last Update Time
      * @param string   $expService Expected Service Type
      *
-     * @covers VisualRadius\Data\Session
+     * @covers Orukusaki\VisualRadius\Data\Session
      * @dataProvider provideSomeSessionData
      *
      * @return void

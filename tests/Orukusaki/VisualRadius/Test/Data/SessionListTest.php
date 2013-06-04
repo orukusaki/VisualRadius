@@ -24,7 +24,7 @@ class SessionListTest extends \PHPUNIT_Framework_TestCase
     /**
      * Check that a Session List behaves nicely as an Itterator
      *
-     * @covers VisualRadius\Data\SessionList
+     * @covers Orukusaki\VisualRadius\Data\SessionList
      *
      * @return void
      */

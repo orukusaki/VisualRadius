@@ -30,7 +30,7 @@ class PastedRecordsTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider providePastedDataToParse
      *
-     * @covers VisualRadius\DataSource\PastedRecords
+     * @covers Orukusaki\VisualRadius\DataSource\PastedRecords
      *
      * @return void
      */
