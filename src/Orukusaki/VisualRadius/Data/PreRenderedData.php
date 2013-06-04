@@ -47,7 +47,7 @@ class PreRenderedData
     /**
      * Build From Session Data
      *
-     * //TODO: Move from timestamps to DateTime
+     * @param SessionList $sessions Sessions
      *
      * @return PreRenderedData
      */

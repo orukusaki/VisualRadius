@@ -47,21 +47,6 @@ class SessionList implements \Iterator
     }
 
     /**
-     * Are any of the sessions in the list dialup sessions?
-     *
-     * @return bool
-     */
-    public function anyDialUp()
-    {
-        foreach ($this->sessions as $session) {
-            if ($session->getService() == Session::SERVICE_DIALUP) {
-                return true;
-            }
-            return false;
-        }
-    }
-
-    /**
      * Reset the index
      *
      * @return void

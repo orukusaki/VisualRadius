@@ -18,7 +18,7 @@ use DateTime;
  * @subpackage Test
  * @author     Peter Smith <peter@orukusaki.co.uk>
  */
-class SessionTest extends \PHPUNIT_Framework_TestCase
+class SessionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test That the Correct Status is selected

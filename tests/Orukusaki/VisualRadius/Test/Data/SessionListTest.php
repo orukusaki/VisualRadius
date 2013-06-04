@@ -19,7 +19,7 @@ use DateTime;
  * @subpackage Test
  * @author     Peter Smith <peter@orukusaki.co.uk>
  */
-class SessionListTest extends \PHPUNIT_Framework_TestCase
+class SessionListTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Check that a Session List behaves nicely as an Itterator

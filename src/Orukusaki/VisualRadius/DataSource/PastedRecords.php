@@ -33,19 +33,19 @@ class PastedRecords implements DataSourceInterface
      *
      * @var SessionList
      */
-    private $_sessions;
+    private $sessions;
 
     /**
      * Constructor
      *
-     * @param string $input The input stright from the HTTP request
+     * @param string $input The input straight from the HTTP request
      *
      * @return void
      */
     public function __construct($input)
     {
         $lines = explode("\n", $input);
-        $this->_sessions = new SessionList();
+        $this->sessions = new SessionList();
 
         foreach ($lines as $line) {
 
@@ -69,7 +69,7 @@ class PastedRecords implements DataSourceInterface
             $sessionService = (preg_match('/^[0-9]{9,12}/', $items[self::COLUMN_CLI]))
                             ? Session::SERVICE_DIALUP : Session::SERVICE_BROADBAND;
 
-            $this->_sessions->add(
+            $this->sessions->add(
                 new Session($sessionService, $sessionLast, $sessionStart, $sessionClose)
             );
         }
@@ -84,7 +84,7 @@ class PastedRecords implements DataSourceInterface
      */
     public function getData()
     {
-        return $this->_sessions;
+        return $this->sessions;
     }
 
     /**
