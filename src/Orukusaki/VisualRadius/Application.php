@@ -25,9 +25,14 @@ class Application extends BaseApplication
     {
         $this['negotiator'] = new FormatNegotiator;
         $this->register(new UrlGeneratorServiceProvider);
-        $this->register(new ConfigServiceProvider($this['base_dir'] . 'config.json'));
-        $this->register(new TwigServiceProvider, array('twig.path' => $this['base_dir'] . 'templates'));
-        $this->register(new TwigGlobalProvider, array('build.file' => $this['base_dir'] . 'build.json'));
+        $this->register(
+            new ConfigServiceProvider(
+                $this['base_dir'] . '/config.json',
+                array('base_dir' => $this['base_dir'])
+            )
+        );
+        $this->register(new TwigServiceProvider, array('twig.path' => $this['base_dir'] . '/templates'));
+        $this->register(new TwigGlobalProvider, array('build.file' => $this['base_dir'] . '/build.json'));
 
         // Why isn't this done in the service provider?
         AnnotationDriver::registerAnnotationClasses();
@@ -43,10 +48,10 @@ class Application extends BaseApplication
                         'namespace' => __NAMESPACE__ . '\\Data'
                     ),
                 ),
-                'doctrine.odm.mongodb.proxies_dir'             => $this['base_dir'] . 'cache',
+                'doctrine.odm.mongodb.proxies_dir'             => $this['base_dir'] . '/cache',
                 'doctrine.odm.mongodb.proxies_namespace'       => 'DoctrineMongoDBProxy',
                 'doctrine.odm.mongodb.auto_generate_proxies'   => true,
-                'doctrine.odm.mongodb.hydrators_dir'           => $this['base_dir'] . 'cache',
+                'doctrine.odm.mongodb.hydrators_dir'           => $this['base_dir'] . '/cache',
                 'doctrine.odm.mongodb.hydrators_namespace'     => 'DoctrineMongoDBHydrator',
                 'doctrine.odm.mongodb.auto_generate_hydrators' => true,
                 'doctrine.odm.mongodb.metadata_cache'          => 'ArrayCache',
@@ -123,7 +128,8 @@ class Application extends BaseApplication
                         $decorator->decorate($preRenderedData);
                     }
                 }
-
+// die(var_dump($request->headers));
+//text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
                 if ($request->get('save')) {
                     $app['doctrine.odm.mongodb.dm']->persist($preRenderedData);
                     $app['doctrine.odm.mongodb.dm']->flush();
@@ -137,6 +143,13 @@ class Application extends BaseApplication
                 if ($app['format'] == 'html') {
                     $app['format'] = 'png';
                 }
+
+                $options = array(
+                    'viewStart' => intval($request->get('viewStart')),
+                    'viewEnd'   => intval($request->get('viewEnd')),
+                );
+
+                $app['image'] = array_merge($app['image'], array_filter($options));
 
                 $renderer = new $app['formats'][$app['format']]($app);
 

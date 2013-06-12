@@ -205,12 +205,12 @@ class Gd implements RendererInterface
 
             // Vertical lines drawn at midnight, 6am, 12pm and 6pm  (provided they are in the image)
             for ($j = 0; $j <= 24; $j = $j + 6) {
-                if ($j >= $viewStart / 60) {
+                if ($j >= $viewStart / 60  && $j <= $viewEnd) {
                     imageline(
                         $image,
-                        $borderLeft + (($j-($viewStart/60))*$hourstep),
+                        $borderLeft + (($j-($viewStart))*$hourstep),
                         $borderTop+($i*$slotHeight),
-                        $borderLeft+(($j-($viewStart/60))*$hourstep),
+                        $borderLeft+(($j-($viewStart))*$hourstep),
                         $borderTop+($i*$slotHeight)+39,
                         $vertline
                     );
@@ -240,7 +240,7 @@ class Gd implements RendererInterface
         // Draw Hour column headers
         for ($j = 0; $j <= $viewLength; $j++) {
 
-            imagestring($image, 1, $borderLeft + ($j * $hourstep) - 3, 10, $j + $viewStart / 60, $colourLine);
+            imagestring($image, 1, $borderLeft + ($j * $hourstep) - 3, 10, $j + $viewStart , $colourLine);
         }
 
         //Blank out any time after now, by drawing a rectangle with the same colour as the bg.
@@ -392,9 +392,9 @@ $dial = false; //FIXME: get from data somehow
     public static function makecolour($image, $colourString)
     {
         if (preg_match('/^#?([\da-f])([\da-f])([\da-f])$/i', $colourString, $matches)) {
-            $r = hexdec($matches[1]) * 16;
-            $g = hexdec($matches[2]) * 16;
-            $b = hexdec($matches[3]) * 16;
+            $r = hexdec($matches[1]) << 4;
+            $g = hexdec($matches[2]) << 4;
+            $b = hexdec($matches[3]) << 4;
 
         } elseif (preg_match('/^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i', $colourString, $matches)) {
             $r = hexdec($matches[1]);

@@ -135,6 +135,9 @@ class PreRenderedData
         return $data;
     }
 
+    /**
+     *
+     */
     public function getSlots()
     {
         return is_object($this->slots)? $this->slots->toArray() : $this->slots;
@@ -155,7 +158,7 @@ class PreRenderedData
         $this->lastAccessed = new DateTime();
     }
 
-    private function getTimeInMinutes(DateTime $time)
+    private static function getTimeInMinutes(DateTime $time)
     {
         return ($time->format("G") * 60) + $time->format("i");
     }

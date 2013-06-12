@@ -1,4 +1,9 @@
 default:
+    context:
+        class: Orukusaki\VisualRadius\BehatContext\VisualRadiusContext
+    paths:
+        features: features
+        bootstrap: tests/bootstrap
     extensions:
         Behat\MinkExtension\Extension:
             base_url: http://localhost:8000
