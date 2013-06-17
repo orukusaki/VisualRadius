@@ -8,14 +8,16 @@ if (php_sapi_name() == 'cli-server' && preg_match('~assets~', $_SERVER["REQUEST_
 
         $path = pathinfo($_SERVER["REQUEST_URI"]);
 
-        switch ($path['extension']) {
-            case 'css':
-                header("Content-Type: text/css");
-                break;
-            case 'png':
-                header("Content-Type: image/png");
-                break;
+        $formats = array(
+            'css' => 'text/css',
+            'png' => 'image/png',
+            'js'  => 'application/javascript',
+        );
+
+        if (array_key_exists($path['extension'], $formats)) {
+            header('Content-Type: ' . $formats[$path['extension']]);
         }
+
         readfile($absPath);
         return true;
     }

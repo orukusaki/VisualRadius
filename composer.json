@@ -17,7 +17,8 @@
         "twig/twig"                       : "1.6.0",
         "silex/silex"                     : "1.0.*@dev",
         "doctrine/mongodb-odm": "dev-master",
-        "docteurklein/silex-doctrine-service-providers": "dev-master"
+        "docteurklein/silex-doctrine-service-providers": "dev-master",
+        "sanpi/twitter-bootstrap-installer": "*@dev"
     },
 
     "require-dev":{
@@ -36,6 +37,19 @@
     "autoload":{
         "psr-0":{
             "Orukusaki": "src/"
+        }
+    },
+
+    "scripts": {
+        "post-install-cmd": "Orukusaki\\VisualRadius\\Installer::postInstall",
+    	"post-update-cmd": "Orukusaki\\VisualRadius\\Installer::postUpdate"
+    },
+    "extra": {
+        "symfony-web-dir": "public/assets",
+        "resources" : {
+            "resources/js" : "js",
+            "resources/css": "css",
+            "resources/img": "img"
         }
     }
 }

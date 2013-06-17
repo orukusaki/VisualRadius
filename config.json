@@ -5,7 +5,8 @@
   },
   "database": {
     "host": "localhost",
-    "database": "visualRadius"
+    "database": "visualRadius",
+    "options": {}
   },
   "formats": {
     "png": "\\Orukusaki\\VisualRadius\\Renderer\\Gd",
@@ -32,6 +33,6 @@
       "vertline": "#969696",
       "keyback": "#ffffff"
     },
-    "imagePath": "%base_dir%/public/assets/images"
+    "imagePath": "%base_dir%/public/assets/img"
   }
 }
