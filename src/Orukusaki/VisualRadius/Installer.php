@@ -8,24 +8,27 @@ class Installer
 {
     public static function postInstall(CommandEvent $event)
     {
-        \Sanpi\TwitterBootstrap\Composer\ScriptHandler::postInstall($event);
         self::installAssets($event);
         self::gatherBuildInfo($event);
+        \Sanpi\TwitterBootstrap\Composer\ScriptHandler::postInstall($event);
     }
 
     public static function postUpdate(CommandEvent $event)
     {
-        \Sanpi\TwitterBootstrap\Composer\ScriptHandler::postUpdate($event);
         self::installAssets($event);
         self::gatherBuildInfo($event);
+        \Sanpi\TwitterBootstrap\Composer\ScriptHandler::postUpdate($event);
     }
 
     static private function installAssets(CommandEvent $event)
     {
         $event->getIO()->write('<info>Installing assets</info>');
-
         $options = $event->getComposer()->getPackage()->getExtra();
         $webDir = $options['symfony-web-dir'];
+
+        if (!is_dir($webDir)) {
+            mkdir($webDir);
+        }
 
         $resourcesFolders = $options['resources'];
 
