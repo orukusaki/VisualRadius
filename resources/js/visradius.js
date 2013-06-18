@@ -4,7 +4,6 @@ $('.modalform').submit(function () {
 
   $(formdata).each(
       function (idx, item) {
-        console.log($('#seekrit-form input[name="'+item.name+'"]'));
       if ($('#seekrit-form input[name="'+item.name+'"]').length) {
         $('#seekrit-form input[name="'+item.name+'"]').val(item.value);
       } else {
@@ -21,17 +20,27 @@ $('.modalform').submit(function () {
   }
   // Seekrit form always saves
   $('#seekrit-form input[name="save"]').val(true);
-
-  formdata.push({"name": "base64", "value": true});
+  $('#myModal').modal('show');
 
   $.ajax({
       type: $(this).prop("method"),
       url : $(this).prop("action"),
       data: formdata,
-      success : function (response) {
+      beforeSend: function (jqXHR) {
+        jqXHR.overrideMimeType('text/plain; charset=x-user-defined');
+      },
+      dataFilter : function (response, dataType) {
 
-          $('#myModal img').prop('src', 'data:image/png;base64,'+ response);
-          $('#myModal').modal('show');
+        // Convert silly unicode back to a nice byte stream.
+        var bytes = new Array(response.length);
+        for (i = 0; i <= response.length; i++ ) {
+          bytes[i] = String.fromCharCode(response.charCodeAt(i) & 0x00ff);
+        }
+
+        return bytes.join('');
+      },
+      success : function (response, status, xhr) {
+        $('#myModal img').prop('src', 'data:image/png;base64,' + btoa(response));
       }
   });
  return false;

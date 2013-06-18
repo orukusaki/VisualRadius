@@ -146,7 +146,6 @@ class Application extends BaseApplication
                 $options = array(
                     'viewStart' => intval($request->get('viewStart')),
                     'viewEnd'   => intval($request->get('viewEnd')),
-                    'base64'   => (bool) ($request->get('base64')),
                 );
 
                 $app['image'] = array_merge($app['image'], array_filter($options));
