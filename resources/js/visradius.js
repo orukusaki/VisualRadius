@@ -1,18 +1,38 @@
-function setWindowSize() {
-  var myWidth = 0;
-  if( typeof( window.innerWidth ) == 'number' ) {
-    //Non-IE
-    myWidth = window.innerWidth;
-   } else if( document.documentElement && document.documentElement.clientWidth ) {
-    //IE 6+ in 'standards compliant mode'
-    myWidth = document.documentElement.clientWidth;
+$('.modalform').submit(function () {
+  var formdata = $(this).serializeArray();
+  var save = false;
 
-  } else if( document.body && document.body.clientWidth  ) {
-    //IE 4 compatible
-    myWidth = document.body.clientWidth;
+  $(formdata).each(
+      function (idx, item) {
+        console.log($('#seekrit-form input[name="'+item.name+'"]'));
+      if ($('#seekrit-form input[name="'+item.name+'"]').length) {
+        $('#seekrit-form input[name="'+item.name+'"]').val(item.value);
+      } else {
+        $('#seekrit-form').append($('<input type="hidden" name="'+item.name+'" value="'+item.value+'" />'));
+      }
+      if (item.name == "save") {
+        save = item.value;
+      }
+    }
+  );
 
+  if (save == true) {
+    return true;
   }
+  // Seekrit form always saves
+  $('#seekrit-form input[name="save"]').val(true);
 
-  document.getElementById("width").value=myWidth-25;
+  formdata.push({"name": "base64", "value": true});
 
-}
+  $.ajax({
+      type: $(this).prop("method"),
+      url : $(this).prop("action"),
+      data: formdata,
+      success : function (response) {
+
+          $('#myModal img').prop('src', 'data:image/png;base64,'+ response);
+          $('#myModal').modal('show');
+      }
+  });
+ return false;
+});

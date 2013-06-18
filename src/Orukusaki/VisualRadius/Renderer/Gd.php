@@ -69,6 +69,8 @@ class Gd implements RendererInterface
      */
     public function render(PreRenderedData $data)
     {
+        $encode = array_key_exists('base64', $this->options) ? $this->options['base64'] : false;
+
         if ($id = $data->getId()) {
 
             $filename = $this->options['path'] . DIRECTORY_SEPARATOR . $data->getId() . '.png';
@@ -86,8 +88,16 @@ class Gd implements RendererInterface
             imagepng($image, $filename);
         }
 
-        return function () use ($image) {
-             imagepng($image);
+        return function () use ($image, $encode) {
+            if ($encode) {
+                ob_clean();
+                ob_start();
+                imagepng($image);
+                $ret = ob_get_clean();
+                echo base64_encode($ret);
+            } else {
+                imagepng($image);
+            }
         };
     }
 

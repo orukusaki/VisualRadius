@@ -10,9 +10,8 @@
 </header>
 <div class="row">
     <div class="span8">
-        <form method="post" action="{{ app.url_generator.generate('generate') }}" class="form-horizontal">
+        <form method="post" action="{{ app.url_generator.generate('generate') }}" class="form-horizontal modalform">
         <fieldset>
-            <input type="hidden" name="width" id="width" style="width:3em"/>
             <div class="control-group">
                 <label class="control-label" for="input01">Output to: </label>
                   <div class="controls">
@@ -36,57 +35,16 @@
                   <div class="controls">
             <select name="viewStart">
                 <option value="0">From:</option>
-                <option value="0">00:00</option>
-                <option value="1">01:00</option>
-                <option value="2">02:00</option>
-                <option value="3">03:00</option>
-                <option value="4">04:00</option>
-                <option value="5">05:00</option>
-                <option value="6">06:00</option>
-                <option value="7">07:00</option>
-                <option value="8">08:00</option>
-                <option value="9">09:00</option>
-                <option value="10">10:00</option>
-                <option value="11">11:00</option>
-                <option value="12">12:00</option>
-                <option value="13">13:00</option>
-                <option value="14">14:00</option>
-                <option value="15">15:00</option>
-                <option value="16">16:00</option>
-                <option value="17">17:00</option>
-                <option value="18">18:00</option>
-                <option value="19">19:00</option>
-                <option value="20">20:00</option>
-                <option value="21">21:00</option>
-                <option value="22">22:00</option>
-                <option value="23">23:00</option>
+                {%for i in 0..23 %}
+                <option value="{{i}}">{{"%02d:00"|format(i)}}</option>
+                {% endfor %}
             </select>
 
             <select name="viewEnd">
                 <option value="24">To:</option>
-                <option value="1">01:00</option>
-                <option value="2">02:00</option>
-                <option value="3">03:00</option>
-                <option value="4">04:00</option>
-                <option value="5">05:00</option>
-                <option value="6">06:00</option>
-                <option value="7">07:00</option>
-                <option value="8">08:00</option>
-                <option value="9">09:00</option>
-                <option value="10">10:00</option>
-                <option value="11">11:00</option>
-                <option value="12">12:00</option>
-                <option value="13">13:00</option>
-                <option value="14">14:00</option>
-                <option value="15">15:00</option>
-                <option value="16">16:00</option>
-                <option value="17">17:00</option>
-                <option value="18">18:00</option>
-                <option value="19">19:00</option>
-                <option value="20">20:00</option>
-                <option value="21">21:00</option>
-                <option value="22">22:00</option>
-                <option value="23">23:00</option>
+                {%for i in 1..23 %}
+                <option value="{{i}}">{{"%02d:00"|format(i)}}</option>
+                {% endfor %}
                 <option value="24">00:00</option>
             </select>
         </div>
@@ -105,7 +63,25 @@
             </fieldset>
 
         </form>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Generated Image</h3>
+          </div>
+          <div class="modal-body">
+            <img src="">
+          </div>
+          <div class="modal-footer">
+            <form method="post" action="{{ app.url_generator.generate('generate') }}" class="form-horizontal" id="seekrit-form">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-primary" id="save-button">Save Image</button>
+            </form>
+          </div>
+        </div>
     </div>
+
     <div class="span4">
         <div class="well">
             <h3>Usage</h3>
@@ -124,4 +100,8 @@
     </div>
 </div>
 
+{% endblock %}
+{% block scripts %}
+<script src="{{root}}assets/js/bootstrap-modal.js"></script>
+<script src="{{root}}assets/js/visradius.js"></script>
 {% endblock %}

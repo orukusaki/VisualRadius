@@ -128,8 +128,7 @@ class Application extends BaseApplication
                         $decorator->decorate($preRenderedData);
                     }
                 }
-// die(var_dump($request->headers));
-//text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+
                 if ($request->get('save')) {
                     $app['doctrine.odm.mongodb.dm']->persist($preRenderedData);
                     $app['doctrine.odm.mongodb.dm']->flush();
@@ -147,6 +146,7 @@ class Application extends BaseApplication
                 $options = array(
                     'viewStart' => intval($request->get('viewStart')),
                     'viewEnd'   => intval($request->get('viewEnd')),
+                    'base64'   => (bool) ($request->get('base64')),
                 );
 
                 $app['image'] = array_merge($app['image'], array_filter($options));
