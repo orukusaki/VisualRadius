@@ -93,9 +93,10 @@ class Session
         } elseif ($last >= new DateTime("-4 hours")) {
 
             $this->status = self::STATUS_ACTIVE;
-            $this->last = new DateTime();
+
         } else {
             $this->status = self::STATUS_LOST;
+            $this->last = new DateTime();
         }
     }
 

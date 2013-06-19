@@ -76,7 +76,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
                 Session::SERVICE_BROADBAND, // service
                 Session::STATUS_ACTIVE,     // expStatus
                 $oneDayAgo,                 // expStart
-                $now,                       // expLast
+                $oneMinuteAgo,              // expLast
                 Session::SERVICE_BROADBAND, // expService
             ),
             // Data set 1, closed session
@@ -98,7 +98,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
                 Session::SERVICE_BROADBAND, // service
                 Session::STATUS_LOST,       // expStatus
                 $oneDayAgo,                 // expStart
-                $fiveHoursAgo,              // expLast
+                $now,                       // expLast
                 Session::SERVICE_BROADBAND, // expService
             ),
             // Data set 3, failed session
