@@ -64,22 +64,22 @@
 
         </form>
 
-        <!-- Modal -->
-        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Generated Image</h3>
-          </div>
-          <div class="modal-body">
-            <img src="">
-          </div>
-          <div class="modal-footer">
-            <form method="post" action="{{ app.url_generator.generate('generate') }}" class="form-horizontal" id="seekrit-form">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            <button class="btn btn-primary" id="save-button">Save Image</button>
-            </form>
-          </div>
-        </div>
+    </div>
+    <!-- Hidden Modal -->
+    <div id="image-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="image-modal-label" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="image-modal-label">Generated Image</h3>
+      </div>
+      <div class="modal-body pagination-centered">
+        <img id="gen-image" src="{{root}}assets/img/loading.gif" data-loading-src="{{root}}assets/img/loading.gif">
+      </div>
+      <div class="modal-footer">
+        <form method="post" action="{{ app.url_generator.generate('generate') }}" class="form-horizontal" id="seekrit-form">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" id="save-button">Save Image</button>
+        </form>
+      </div>
     </div>
 
     <div class="span4">

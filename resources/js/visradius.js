@@ -20,7 +20,10 @@ $('.modalform').submit(function () {
   }
   // Seekrit form always saves
   $('#seekrit-form input[name="save"]').val(true);
-  $('#myModal').modal('show');
+
+  // Show the modal with the loading gif
+  $('#gen-image').prop('src', $('#gen-image').data('loading-src'));
+  $('#image-modal').modal('show');
 
   $.ajax({
       type: $(this).prop("method"),
@@ -40,7 +43,7 @@ $('.modalform').submit(function () {
         return bytes.join('');
       },
       success : function (response, status, xhr) {
-        $('#myModal img').prop('src', 'data:image/png;base64,' + btoa(response));
+        $('#gen-image').prop('src', 'data:image/png;base64,' + btoa(response));
       }
   });
  return false;
