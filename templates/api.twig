@@ -26,7 +26,6 @@
         <ul>
             <li>html</li>
             <li>json</li>
-            <li>xml</li>
             <li>png</li>
         </ul>
         <p>NB. Not every format is available for every call.</p>
@@ -46,7 +45,7 @@
                     <td><strong>GET</strong> /</td>
                     <td>Index page</td>
                     <td><em>none</em></td>
-                    <td>html, xml, json</td>
+                    <td>html, json</td>
                 </tr>
                 <tr>
                     <td><strong>GET</strong> /image/{imageId}.{format}</td>
@@ -59,26 +58,28 @@
                             <dd>(optional) Return format</dd>
                         </dl>
                     </td>
-                    <td>png, html, xml, json</td>
+                    <td>png, html, json</td>
                 </tr>
                 <tr>
                     <td><strong>POST</strong> /image</td>
                     <td>Generate a new image</td>
                     <td>
                         <dl>
-                            <dt>width</dt>
-                            <dd>Image Width</dd>
-                            <dt>save</dt>
+                            <dt>imageWidth <em>(default: {{app.image.imageWidth}})</em></dt>
+                            <dd>Image Width in pixels</dd>
+                            <dt>save <em>(default: 0)</em></dt>
                             <dd>0/1 Whether to cache the generated image for recall later.  A cached image will be returned as a resource link to the newly created image.</dd>
-                            <dt>condense</dt>
+                            <dt>decorator-condense <em>(default: 0)</em></dt>
                             <dd>0/1 Whether to condense sessions or gaps which span multiple days.</dd>
-                            <dt>viewStart</dt>
+                            <dt>viewStart <em>(default: 0)</em></dt>
                             <dd>0-23 The start time in hours</dd>
-                            <dt>pastedRecords</dt>
+                            <dt>viewEnd <em>(default: 24)</em></dt>
+                            <dd>1-24 The end time in hours</dd>
+                            <dt>pastedRecords (required)</dt>
                             <dd>Paste from the RADIUS reporting page in Workplace.  Fields should be tab-separated.</dd>
                         </dl>
                     </td>
-                    <td>png, html, xml, json</td>
+                    <td>png, html, json</td>
                 </tr>
             </tbody>
 

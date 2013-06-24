@@ -41,8 +41,14 @@
     },
 
     "scripts": {
-        "post-install-cmd": "Orukusaki\\VisualRadius\\Installer::postInstall",
-    	"post-update-cmd": "Orukusaki\\VisualRadius\\Installer::postUpdate"
+        "post-install-cmd": [
+            "Orukusaki\\VisualRadius\\Installer::postInstall",
+            "Sanpi\\TwitterBootstrap\\Composer\\ScriptHandler::postInstall"
+        ],
+    	"post-update-cmd": [
+            "Orukusaki\\VisualRadius\\Installer::postUpdate",
+            "Sanpi\\TwitterBootstrap\\Composer\\ScriptHandler::postInstall"
+        ]
     },
     "extra": {
         "symfony-web-dir": "public/assets",

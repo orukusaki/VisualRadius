@@ -10,14 +10,12 @@ class Installer
     {
         self::installAssets($event);
         self::gatherBuildInfo($event);
-        \Sanpi\TwitterBootstrap\Composer\ScriptHandler::postInstall($event);
     }
 
     public static function postUpdate(CommandEvent $event)
     {
         self::installAssets($event);
         self::gatherBuildInfo($event);
-        \Sanpi\TwitterBootstrap\Composer\ScriptHandler::postUpdate($event);
     }
 
     static private function installAssets(CommandEvent $event)
